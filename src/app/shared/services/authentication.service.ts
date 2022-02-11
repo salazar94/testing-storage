@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, delay, map, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { User } from '../interfaces/user.type';
 import { AuthenticationForm } from '../interfaces/authentication-form';
@@ -16,19 +16,18 @@ import { ResolversEnum } from '../enums/resolvers.enum';
 export class AuthenticationService {
 
     isLogged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    private currentUserSubject: BehaviorSubject<User>;
+    private currentUserSubject: BehaviorSubject<User> = new BehaviorSubject<User>(null);
     public currentUser: Observable<User>;
 
     constructor(private http: HttpClient, private router: Router, private splashScreenState: SplashScreenStateService) {
-        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
     isLoggedIn(resolver: string) {
-        let ret = false;
         this.http.get(`${environment.endpoint}api/auth/check`)
             .pipe(
                 tap((response: any) => {
+                    this.currentUserSubject.next(response.user);
                     this.resolveLogged(true, resolver);
                 }),
                 catchError(
@@ -62,14 +61,12 @@ export class AuthenticationService {
     }
 
     login(form: AuthenticationForm) {
-        const { username, password } = form;
         const TOKEN_URL = `${environment.endpoint}oauth/token`;
         const body = {
             grant_type: 'password',
             client_id: environment.client_id,
             client_secret: environment.client_secret,
-            username: username,
-            password: password,
+            ...form,
             scope: '*'
         };
 
@@ -86,7 +83,16 @@ export class AuthenticationService {
     }
 
     logout() {
-        localStorage.removeItem('currentUser');
-        this.currentUserSubject.next(null);
+        const LOGOUT_URL = `${environment.endpoint}api/auth/logout`;
+        return this.http.post<any>(LOGOUT_URL, {})
+            .pipe(
+                map(() => {
+                    localStorage.removeItem('session-object');
+                    this.isLogged.next(false);
+                    this.router.navigate(['/login']);
+                }, error => {
+                    console.error(error);
+                })
+            );
     }
 }

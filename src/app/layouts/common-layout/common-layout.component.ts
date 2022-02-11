@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { isThursday } from 'date-fns';
 import { Observable } from "rxjs";
 import { distinctUntilChanged, filter, map, startWith } from "rxjs/operators";
+import { User } from 'src/app/shared/interfaces/user.type';
+import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 import { IBreadcrumb } from "../../shared/interfaces/breadcrumb.type";
 import { ThemeConstantService } from '../../shared/services/theme-constant.service';
 
@@ -10,16 +13,22 @@ import { ThemeConstantService } from '../../shared/services/theme-constant.servi
     templateUrl: './common-layout.component.html',
 })
 
-export class CommonLayoutComponent  {
+export class CommonLayoutComponent {
 
     breadcrumbs$: Observable<IBreadcrumb[]>;
     contentHeaderDisplay: string;
-    isFolded : boolean ;
-    isSideNavDark : boolean;
+    isFolded: boolean;
+    isSideNavDark: boolean;
     isExpand: boolean;
     selectedHeaderColor: string;
 
-    constructor(private router: Router,  private activatedRoute: ActivatedRoute, private themeService: ThemeConstantService) {
+    user: User;
+
+    constructor(private router: Router
+        , private activatedRoute: ActivatedRoute
+        , private themeService: ThemeConstantService
+        , private authService: AuthenticationService
+    ) {
         this.router.events.pipe(
             filter(event => event instanceof NavigationEnd),
             map(() => {
@@ -35,21 +44,22 @@ export class CommonLayoutComponent  {
                 }
                 return null;
             })
-        ).subscribe( (data: any) => {
+        ).subscribe((data: any) => {
             this.contentHeaderDisplay = data;
         });
     }
 
     ngOnInit() {
+        this.authService.currentUser.subscribe(user => this.user = user);
         this.breadcrumbs$ = this.router.events.pipe(
             startWith(new NavigationEnd(0, '/', '/')),
-            filter(event => event instanceof NavigationEnd),distinctUntilChanged(),
+            filter(event => event instanceof NavigationEnd), distinctUntilChanged(),
             map(data => this.buildBreadCrumb(this.activatedRoute.root))
         );
         this.themeService.isMenuFoldedChanges.subscribe(isFolded => this.isFolded = isFolded);
         this.themeService.isSideNavDarkChanges.subscribe(isDark => this.isSideNavDark = isDark);
-        this.themeService.selectedHeaderColor.subscribe(color => this.selectedHeaderColor = color);   
-        this.themeService.isExpandChanges.subscribe(isExpand => this.isExpand = isExpand);     
+        this.themeService.selectedHeaderColor.subscribe(color => this.selectedHeaderColor = color);
+        this.themeService.isExpandChanges.subscribe(isExpand => this.isExpand = isExpand);
     }
 
     private buildBreadCrumb(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumb[] = []): IBreadcrumb[] {

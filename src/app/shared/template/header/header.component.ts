@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { User } from '../../interfaces/user.type';
+import { AuthenticationService } from '../../services/authentication.service';
 import { ThemeConstantService } from '../../services/theme-constant.service';
 
 @Component({
@@ -6,14 +9,21 @@ import { ThemeConstantService } from '../../services/theme-constant.service';
     templateUrl: './header.component.html'
 })
 
-export class HeaderComponent{
+export class HeaderComponent implements OnDestroy{
+
+    @Input() user: User;
 
     searchVisible : boolean = false;
     quickViewVisible : boolean = false;
     isFolded : boolean;
     isExpand : boolean;
+    authSubscriber: Subscription;
 
-    constructor( private themeService: ThemeConstantService) {}
+    constructor( private themeService: ThemeConstantService, private authService: AuthenticationService) {}
+
+    ngOnDestroy(): void {
+        this.authSubscriber?.unsubscribe();
+    }
 
     ngOnInit(): void {
         this.themeService.isMenuFoldedChanges.subscribe(isFolded => this.isFolded = isFolded);
@@ -40,30 +50,7 @@ export class HeaderComponent{
         this.quickViewVisible = !this.quickViewVisible;
     }
 
-    notificationList = [
-        {
-            title: 'You received a new message',
-            time: '8 min',
-            icon: 'mail',
-            color: 'ant-avatar-' + 'blue'
-        },
-        {
-            title: 'New user registered',
-            time: '7 hours',
-            icon: 'user-add',
-            color: 'ant-avatar-' + 'cyan'
-        },
-        {
-            title: 'System Alert',
-            time: '8 hours',
-            icon: 'warning',
-            color: 'ant-avatar-' + 'red'
-        },
-        {
-            title: 'You have a new update',
-            time: '2 days',
-            icon: 'sync',
-            color: 'ant-avatar-' + 'gold'
-        }
-    ];
+    logout() {
+        this.authSubscriber = this.authService.logout().subscribe();
+    }
 }

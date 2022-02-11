@@ -7,31 +7,33 @@
             <div class="row align-items-center">
                 <div class="col-md-5">
                     <nz-card>
-                        <h2 class="m-t-20">Sign In</h2>
-                        <p class="m-b-30">Enter your credential to get access</p>
-                        <form nz-form [formGroup]="loginForm" nzLayout="vertical" class="login-form" (ngSubmit)="submitForm()">
+                        <h2 class="m-t-20">Iniciar sesión</h2>
+                        <p class="m-b-30">Ingresa tus credenciales para accesar al sistema</p>
+                        <form nz-form [formGroup]="loginForm" nzLayout="vertical" class="login-form"
+                            (ngSubmit)="submitForm()">
                             <nz-form-item>
-                                <nz-form-label nzRequired nzFor="userName">Username</nz-form-label>
-                                <nz-form-control nzErrorTip="Please input your username!">
+                                <nz-form-label nzRequired nzFor="userName">Usuario</nz-form-label>
+                                <nz-form-control nzErrorTip="Ingresa tu nombre de usuario por favor">
                                     <nz-input-group [nzPrefix]="prefixUser">
-                                        <input type="text" nz-input formControlName="userName" placeholder="Username">
+                                        <input type="text" nz-input formControlName="username" placeholder="Username">
                                     </nz-input-group>
                                 </nz-form-control>
                             </nz-form-item>
                             <nz-form-item class="relative">
                                 <nz-form-label nzRequired nzFor="password">Password</nz-form-label>
-                                <a class="float-right font-size-13 text-muted" style="position:absolute; right: 0" [routerLink]="['/authentication/reset-password-1']">Forget Password?</a>
-                                <nz-form-control nzErrorTip="Please input your Password!">
+                                <nz-form-control nzErrorTip="Por favor ingresa tu password">
                                     <nz-input-group [nzPrefix]="prefixLock">
-                                        <input type="password" nz-input formControlName="password" placeholder="Password">
+                                        <input type="password" nz-input formControlName="password"
+                                            placeholder="Password">
                                     </nz-input-group>
                                 </nz-form-control>
                             </nz-form-item>
                             <nz-form-item>
                                 <nz-form-control>
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <span class="font-size-13 text-muted">Don't have an account? <a class="small" [routerLink]="['/authentication/sign-up-1']"> Signup</a></span>
-                                        <button nz-button class="login-form-button" [nzType]="'primary'">Sign In</button>
+                                    <div class="d-flex align-items-center justify-content-end">
+                                        <button nz-button class="login-form-button" [nzType]="'primary'">
+                                            Iniciar sesión
+                                        </button>
                                     </div>
                                 </nz-form-control>
                             </nz-form-item>
@@ -46,15 +48,7 @@
             </div>
         </div>
         <div class="d-none d-md-flex  p-h-40 justify-content-between">
-            <span class="">© 2019 ThemeNate</span>
-            <ul class="list-inline">
-                <li class="list-inline-item">
-                    <a class="text-dark text-link" href="">Legal</a>
-                </li>
-                <li class="list-inline-item">
-                    <a class="text-dark text-link" href="">Privacy</a>
-                </li>
-            </ul>
+            <span class="">© 2019 ThemeNate | Nuut development</span>
         </div>
     </div>
 </div>

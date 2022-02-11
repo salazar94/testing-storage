@@ -1,27 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
 
-import { FullLayoutComponent } from "./layouts/full-layout/full-layout.component";
 import { CommonLayoutComponent } from "./layouts/common-layout/common-layout.component";
 
-import { FullLayout_ROUTES } from "./shared/routes/full-layout.routes";
 import { CommonLayout_ROUTES } from "./shared/routes/common-layout.routes";
+import { LoginComponent } from './pages/auth/login/login.component';
+import { AuthResolverService } from './shared/services/auth-resolver.service';
+import { LoginResolverService } from './shared/services/login-resolver.service';
 
 const appRoutes: Routes = [
     {
         path: '',
-        redirectTo: '/dashboard/home',
+        redirectTo: '/dashboard',
         pathMatch: 'full',
     },
-    { 
-        path: '', 
+    {
+        path: '',
         component: CommonLayoutComponent,
+        resolve: { auth: AuthResolverService },
         children: CommonLayout_ROUTES 
     },
     { 
-        path: '', 
-        component: FullLayoutComponent, 
-        children: FullLayout_ROUTES
+        path: 'login',
+        resolve: { unauth: LoginResolverService },
+        component: LoginComponent
     }
 ];
 
@@ -30,7 +32,8 @@ const appRoutes: Routes = [
         RouterModule.forRoot(appRoutes, { 
             preloadingStrategy: PreloadAllModules,
             anchorScrolling: 'enabled',
-            scrollPositionRestoration: 'enabled' 
+            scrollPositionRestoration: 'enabled',
+            useHash: true
         })
     ],
     exports: [

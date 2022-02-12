@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { User } from '../interfaces/user.type';
@@ -18,9 +18,12 @@ export class AuthenticationService {
     isLogged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private currentUserSubject: BehaviorSubject<User> = new BehaviorSubject<User>(null);
     public currentUser: Observable<User>;
+    private sidebarSubject: BehaviorSubject<any> = new BehaviorSubject<any>([]);
+    public sidebar: Observable<any>;
 
     constructor(private http: HttpClient, private router: Router, private splashScreenState: SplashScreenStateService) {
         this.currentUser = this.currentUserSubject.asObservable();
+        this.sidebar = this.sidebarSubject.asObservable();
     }
 
     isLoggedIn(resolver: string) {
@@ -28,6 +31,7 @@ export class AuthenticationService {
             .pipe(
                 tap((response: any) => {
                     this.currentUserSubject.next(response.user);
+                    this.sidebarSubject.next(response.sidebar);
                     this.resolveLogged(true, resolver);
                 }),
                 catchError(

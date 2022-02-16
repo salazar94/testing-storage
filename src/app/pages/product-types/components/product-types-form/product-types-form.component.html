@@ -1,0 +1,28 @@
+<form [formGroup]="productTypesForm" (submit)="submitForm()">
+    <div class="form-group row">
+        <div class="col-6">
+            <label class="form-label" for="name"><small class="text-danger">*</small> Producto:</label>
+            <input class="form-control" formControlName="name" placeholder="Nombre del producto"/>
+            <small class="form-text text-danger"
+                *ngIf="formValidate.name.required && formValidate.name.markInvalid">This field is
+                required
+            </small>
+        </div>
+        <div class="col-6">
+            <label class="form-label" for="unit_ptice"><small class="text-danger">*</small> Precio:</label>
+            <input class="form-control" formControlName="unit_price" placeholder="$0.00" appNumeric/>
+            <small class="form-text text-danger"
+                *ngIf="formValidate.unit_price.required && formValidate.unit_price.markInvalid">This field is
+                required
+            </small>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12 d-flex justify-content-end">
+            <button nz-button nzType="primary" type="submit">
+                <i nz-icon nzType="save" nzTheme="outline"></i>
+                Guardar
+            </button>
+        </div>
+    </div>
+</form>

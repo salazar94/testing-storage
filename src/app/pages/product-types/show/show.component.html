@@ -1,0 +1,20 @@
+<nz-card class="content-card" [nzTitle]="title">
+    <div class="form-group row">
+        <div class="col-6">
+            <label class="form-label" for="name">Producto:</label>
+            <input class="form-control" [value]="productType?.name" disabled/>
+        </div>
+        <div class="col-6">
+            <label class="form-label">Precio:</label>
+            <input class="form-control" [value]="productType?.unit_price" disabled/>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12 d-flex justify-content-end">
+            <button nz-button nzType="primary" [routerLink]="[editRoute]">
+                <i class="fa fa-pen me-1"></i>
+                Editar
+            </button>
+        </div>
+    </div>
+</nz-card>

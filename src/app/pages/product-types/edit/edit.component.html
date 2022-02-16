@@ -1,0 +1,3 @@
+<nz-card class="content-card" [nzTitle]="title">
+    <app-product-types-form *ngIf="productType" [productType]="productType" (submitEvent)="submit($event)"></app-product-types-form>
+</nz-card>

@@ -1,0 +1,10 @@
+<ng-template #cardTools>
+    <button nz-button nzType="primary" [routerLink]="'create'">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+        Nuevo
+    </button>
+</ng-template>
+<nz-card class="content-card" [nzTitle]="title" [nzExtra]="cardTools">
+    <app-datatable [ajaxURI]="resource" [columns]="columns"></app-datatable>
+</nz-card>
+

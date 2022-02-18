@@ -29,6 +29,8 @@ import { SplashScreenComponent } from './shared/components/splash-screen/splash-
 import { AppService } from './shared/services/app.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './shared/interceptor/token.interceptor';
+import { NgxUiLoaderConfig, NgxUiLoaderHttpModule, NgxUiLoaderModule, NgxUiLoaderRouterModule, PB_DIRECTION, POSITION, SPINNER } from 'ngx-ui-loader';
+import { environment } from 'src/environments/environment';
 
 export function app_init(appService: AppService) {
     return () => appService.initializeApp();
@@ -41,6 +43,18 @@ const antdModule = [
     NzCardModule,
     NzCheckboxModule
 ]
+
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+    // bgsColor: environment.brand_color,
+    bgsPosition: POSITION.bottomLeft,
+    // bgsSize: 40,
+    bgsType: SPINNER.ballSpinClockwiseFadeRotating, // background spinner type
+    fgsType: SPINNER.doubleBounce, // foreground spinner type
+    // fgsColor: environment.brand_color,
+    // pbColor: environment.brand_color,
+    pbDirection: PB_DIRECTION.leftToRight, // progress bar direction
+    pbThickness: 8, // progress bar thickness
+  };
 
 registerLocaleData(en);
 
@@ -61,6 +75,9 @@ registerLocaleData(en);
         TemplateModule,
         SharedModule,
         NgChartjsModule,
+        NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+        NgxUiLoaderRouterModule,
+        NgxUiLoaderHttpModule,
         ...antdModule
     ],
     providers: [

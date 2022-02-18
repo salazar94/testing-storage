@@ -15,6 +15,7 @@ import { ResolversEnum } from '../enums/resolvers.enum';
 })
 export class AuthenticationService {
 
+    loginRequestActive: Subject<boolean> = new Subject<boolean>();
     isLogged: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private currentUserSubject: BehaviorSubject<User> = new BehaviorSubject<User>(null);
     public currentUser: Observable<User>;
@@ -80,8 +81,11 @@ export class AuthenticationService {
                     localStorage.setItem('session-object', JSON.stringify(response));
                     this.isLogged.next(true);
                     this.router.navigate(['/dashboard']);
-                }, error => {
+                }),
+                catchError(error => {
+                    this.loginRequestActive.next(false);
                     console.error(error);
+                    return of(error);
                 })
             );
     }

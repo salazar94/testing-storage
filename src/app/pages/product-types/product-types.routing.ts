@@ -13,14 +13,16 @@ export const PRODUCT_TYPES_ROUTES: Routes = [
                 path: '',
                 component: IndexComponent,
                 data: {
-                    title: 'Productos'
+                    title: 'Productos',
+                    url: 'catalogs/product-types'
                 }
             },
             {
                 path: 'create',
                 component: CreateComponent,
                 data: {
-                    title: 'Productos'
+                    title: 'Productos',
+                    url: 'catalogs/product-types'
                 }
             },
             {
@@ -28,7 +30,8 @@ export const PRODUCT_TYPES_ROUTES: Routes = [
                 component: EditComponent,
                 resolve: { productType: ProductTypeService },
                 data: {
-                    title: 'Productos'
+                    title: 'Productos',
+                    url: 'catalogs/product-types'
                 }
             },
             {
@@ -36,7 +39,8 @@ export const PRODUCT_TYPES_ROUTES: Routes = [
                 component: ShowComponent,
                 resolve: { productType: ProductTypeService },
                 data: {
-                    title: 'Productos'
+                    title: 'Productos',
+                    url: 'catalogs/product-types'
                 }
             },
         ]

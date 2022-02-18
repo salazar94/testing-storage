@@ -68,7 +68,7 @@ export class CommonLayoutComponent {
         if (route.routeConfig) {
             if (route.routeConfig.data) {
                 label = route.routeConfig.data['title'];
-                path += route.routeConfig.path;
+                path += route.routeConfig.data['url'];
             }
         } else {
             label = 'Dashboard';

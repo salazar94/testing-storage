@@ -12,6 +12,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   loginForm: FormGroup;
   subscriber: Subscription;
+  loginRequestSubscription: Subscription;
+  isLoading: boolean = false;
 
   constructor(private fb: FormBuilder, private authService: AuthenticationService) {
   }
@@ -21,6 +23,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       username: [null, [Validators.required]],
       password: [null, [Validators.required]]
     });
+    this.loginRequestSubscription = this.authService.loginRequestActive.subscribe(value => {
+      this.isLoading = value;
+    });
   }
 
   submitForm(): void {
@@ -29,11 +34,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.loginForm.controls[i].updateValueAndValidity();
     }
     if (this.loginForm.valid) {
+      this.authService.loginRequestActive.next(true);
       this.subscriber = this.authService.login(this.loginForm.value).subscribe();
     }
   }
 
   ngOnDestroy(): void {
     this.subscriber?.unsubscribe();
+    this.loginRequestSubscription?.unsubscribe();
   }
 }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ProductType } from 'src/app/shared/interfaces/product-type';
 
 @Component({
@@ -15,9 +15,9 @@ export class ProductTypesFormComponent implements OnInit {
     }
   }
   @Output() submitEvent = new EventEmitter<ProductType>();
-  productTypesForm: FormGroup;
+  productTypesForm: UntypedFormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: UntypedFormBuilder) {
     this.initForm();
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 
@@ -10,12 +10,12 @@ import { AuthenticationService } from 'src/app/shared/services/authentication.se
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  loginForm: FormGroup;
+  loginForm: UntypedFormGroup;
   subscriber: Subscription;
   loginRequestSubscription: Subscription;
   isLoading: boolean = false;
 
-  constructor(private fb: FormBuilder, private authService: AuthenticationService) {
+  constructor(private fb: UntypedFormBuilder, private authService: AuthenticationService) {
   }
 
   ngOnInit(): void {
